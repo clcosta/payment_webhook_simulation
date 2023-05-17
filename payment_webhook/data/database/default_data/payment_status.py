@@ -1,6 +1,6 @@
 from sqlmodel import Session
 from sqlalchemy.engine import Engine
-from payment_webhook.data.service import PaymentStatus
+from payment_webhook.data.contracts import PaymentStatus
 from ..models import PaymentType
 
 
