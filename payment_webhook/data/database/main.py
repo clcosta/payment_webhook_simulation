@@ -1,15 +1,18 @@
-from sqlalchemy.exc import IntegrityError
-from payment_webhook.settings import BASE_PATH
-from sqlmodel import SQLModel, Session, select, text
-from .engine import engine
-from .models import User, PaymentType, PaymentHistory
 from typing import Any, Type
-from .default_data import create_payments_data
+
+from sqlalchemy.exc import IntegrityError
+from sqlmodel import Session, SQLModel, select, text
+
 from payment_webhook.data.contracts import (
     IPaymentHistory,
-    PaymentStatus,
     IUser,
+    PaymentStatus,
 )
+from payment_webhook.settings import BASE_PATH
+
+from .default_data import create_payments_data
+from .engine import engine
+from .models import PaymentHistory, PaymentType, User
 
 
 def create_db_and_tables():
@@ -88,6 +91,7 @@ class DataBase:
         user.access_aproved = False
         self._session.refresh(user)
         return user
+
 
 # LOCAL
 db_path = BASE_PATH.parent / 'db.db'

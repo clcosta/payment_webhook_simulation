@@ -1,2 +1,2 @@
-from .database import *
 from .contracts import *
+from .database import *

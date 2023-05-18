@@ -1,9 +1,10 @@
-from payment_webhook.data.contracts import IUser
-from sqlmodel import Field, Column
-from payment_webhook.settings import ENCRYPTION_KEY
 from sqlalchemy import Unicode
 from sqlalchemy_utils import EncryptedType
 from sqlalchemy_utils.types.encrypted.encrypted_type import AesEngine
+from sqlmodel import Column, Field
+
+from payment_webhook.data.contracts import IUser
+from payment_webhook.settings import ENCRYPTION_KEY
 
 
 class User(IUser, table=True):  # Table and Schema
