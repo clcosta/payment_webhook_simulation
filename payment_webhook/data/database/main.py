@@ -1,9 +1,10 @@
-from typing import Any, Type
+from typing import Any, Type, TypeVar
 
 from sqlalchemy.exc import IntegrityError
 from sqlmodel import Session, SQLModel, select, text
 
 from payment_webhook.data.contracts import (
+    IAuthUser,
     IPaymentHistory,
     IUser,
     PaymentStatus,
@@ -12,7 +13,9 @@ from payment_webhook.settings import BASE_PATH
 
 from .default_data import create_payments_data
 from .engine import engine
-from .models import PaymentHistory, PaymentType, User
+from .models import Auth, PaymentHistory, PaymentType, User
+
+Repository = TypeVar('Repository')
 
 
 def create_db_and_tables():
@@ -26,6 +29,7 @@ class DataBase:
     User = User
     PaymentType = PaymentType
     PaymentHistory = PaymentHistory
+    Auth = Auth
 
     def __enter__(self):
         self._session = Session(bind=engine)
@@ -47,7 +51,7 @@ class DataBase:
             print(er)
             raise er
 
-    def __get(self, model: Type[SQLModel], **kwargs: dict) -> Any:
+    def __get(self, model: Repository, **kwargs: dict) -> Repository:
         if kwargs:
             filter_args = [
                 text(k + ' == ' + repr(v)) for k, v in kwargs.items()
@@ -66,7 +70,28 @@ class DataBase:
         instance = self.PaymentHistory(**kwargs)
         self.__add(instance)
 
-    def register_user(self, **kwargs: IUser) -> User:
+    def register_user(self, **kwargs: IAuthUser) -> User:
+        auth_instance = self.Auth(**kwargs)
+        self.__add(auth_instance)
+        user_name = auth_instance.email.split('@')[0]
+        user_instance = self.add_user(
+            nome=user_name, email=auth_instance.email
+        )
+        return user_instance
+
+    def get_registered_user(self, email: str, password: str) -> User:
+        user_auth = self.__get(DataBase.Auth, email=email)
+        if not user_auth:
+            return None
+        if user_auth.verify_password(password):
+            user = self.__get(DataBase.User, email=user_auth.email)
+            if user:
+                return user
+            else:
+                raise ValueError('User are not registered')
+        raise ValueError('Password mismatch')
+
+    def add_user(self, **kwargs: IUser) -> User:
         instance = self.User(**kwargs)
         self.__add(instance)
         return instance

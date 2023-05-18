@@ -20,3 +20,8 @@ TEMPLATE_DIR = BASE_PATH / 'main/server/templates'
 ENCRYPTION_KEY = os.getenv(
     'ENCRYPTION_KEY', default='YOUR-SECRET-KEY-OF-ENCRYPTION'
 )
+
+# DEFAULT_ACESS_TOKEN
+DEFAULT_REGISTER_TOKEN = os.getenv(
+    'DEFAULT_REGISTER_TOKEN', default='uhdfaAADF123'
+)
