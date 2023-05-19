@@ -9,6 +9,7 @@ from payment_webhook.data.contracts import IPaymentHistory
 class PaymentHistory(IPaymentHistory, table=True):   # Table and Schema
     id: int | None = Field(default=None, primary_key=True)
     payment_type_id: int = Field(foreign_key='payment_type.id', nullable=False)
+    info: str = Field(nullable=False)
     created_at: datetime = Field(default=datetime.now())
     updated_at: datetime = Field(default=datetime.now())
     deleted_at: datetime | None = Field(default=None)

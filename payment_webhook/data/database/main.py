@@ -1,14 +1,10 @@
+import json
 from typing import Any, Type, TypeVar
 
 from sqlalchemy.exc import IntegrityError
 from sqlmodel import Session, SQLModel, select, text
 
-from payment_webhook.data.contracts import (
-    IAuthUser,
-    IPaymentHistory,
-    IUser,
-    PaymentStatus,
-)
+from payment_webhook.data.contracts import PaymentStatus
 from payment_webhook.settings import BASE_PATH
 
 from .default_data import create_payments_data
@@ -51,7 +47,9 @@ class DataBase:
             print(er)
             raise er
 
-    def __get(self, model: Repository, **kwargs: dict) -> Repository:
+    def __get(
+        self, model: Repository, **kwargs
+    ) -> Repository | None | list[Repository]:
         if kwargs:
             filter_args = [
                 text(k + ' == ' + repr(v)) for k, v in kwargs.items()
@@ -66,11 +64,13 @@ class DataBase:
         result = self.__get(DataBase.PaymentType, status=_type.value)
         return result.id
 
-    def register_payment(self, **kwargs: IPaymentHistory):
+    def register_payment(self, **kwargs):
         instance = self.PaymentHistory(**kwargs)
+        if isinstance(instance.info, dict):
+            instance.info = json.dumps(instance.info)
         self.__add(instance)
 
-    def register_user(self, **kwargs: IAuthUser) -> User:
+    def register_user(self, **kwargs) -> User:
         auth_instance = self.Auth(**kwargs)
         self.__add(auth_instance)
         user_name = auth_instance.email.split('@')[0]
@@ -79,11 +79,15 @@ class DataBase:
         )
         return user_instance
 
-    def get_registered_user(self, email: str, password: str) -> User:
+    # noinspection PyArgumentList
+    def get_registered_user(
+        self, email: str, password: str
+    ) -> Type[User] | None:
         user_auth = self.__get(DataBase.Auth, email=email)
         if not user_auth:
             return None
-        if user_auth.verify_password(password):
+        # noinspection PyArgumentList
+        if user_auth.verify_password(password=password):
             user = self.__get(DataBase.User, email=user_auth.email)
             if user:
                 return user
@@ -91,28 +95,28 @@ class DataBase:
                 raise ValueError('User are not registered')
         raise ValueError('Password mismatch')
 
-    def add_user(self, **kwargs: IUser) -> User:
+    def add_user(self, **kwargs) -> User:
         instance = self.User(**kwargs)
         self.__add(instance)
         return instance
 
     def get_user(
-        self, id: int | None = None, email: str | None = None
-    ) -> User:
-        if not any([id, email]):
+        self, user_id: int | None = None, email: str | None = None
+    ) -> Type[User] | None:
+        if not any([user_id, email]):
             raise ValueError('id or email are required')
-        if id:
-            return self.__get(DataBase.User, id=id)
+        if user_id:
+            return self.__get(DataBase.User, id=user_id)
         return self.__get(DataBase.User, email=email)
 
-    def aprove_user_access(self, user_id: int) -> User:
-        user = self.get_user(id=user_id)
+    def aprove_user_access(self, user_id: int) -> Type[User]:
+        user = self.get_user(user_id=user_id)
         user.access_aproved = True
         self._session.refresh(user)
         return user
 
-    def revoke_user_access(self, user_id: int) -> User:
-        user = self.get_user(id=user_id)
+    def revoke_user_access(self, user_id: int) -> Type[User]:
+        user = self.get_user(user_id=user_id)
         user.access_aproved = False
         self._session.refresh(user)
         return user

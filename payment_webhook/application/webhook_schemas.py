@@ -3,7 +3,7 @@ from pydantic import BaseModel
 from payment_webhook.data.contracts import PaymentStatus
 
 
-class WebhookBodyModel(BaseModel):
+class WebhookBodySchema(BaseModel):
 
     nome: str
     email: str
