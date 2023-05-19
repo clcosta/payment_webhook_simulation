@@ -4,7 +4,7 @@ from typing import Any, Type, TypeVar
 from sqlalchemy.exc import IntegrityError
 from sqlmodel import Session, SQLModel, select, text
 
-from payment_webhook.data.contracts import PaymentStatus
+from payment_webhook.data.contracts import Actions, PaymentStatus
 from payment_webhook.settings import BASE_PATH
 
 from .default_data import create_payments_data
@@ -19,7 +19,6 @@ def create_db_and_tables():
 
 
 class DataBase:
-
     _session: Session = None
     autocommit = True
     User = User
@@ -64,7 +63,21 @@ class DataBase:
         result = self.__get(DataBase.PaymentType, status=_type.value)
         return result.id
 
-    def register_payment(self, **kwargs):
+    def register_payment(self, actions: list[Actions] = None, **kwargs):
+        if not actions and 'actions' not in kwargs:
+            raise ValueError('actions are required')
+        elif not actions and 'actions' in kwargs:
+            actions = kwargs.pop('actions')
+        actions = [action.value for action in actions]
+        data = {
+            'actionsTaken': actions,
+            'valor': kwargs.get('valor', 0),
+            'formaDePagamento': kwargs.get(
+                'forma_de_pagamento', 'Não informado'
+            ),
+            'parcelas': kwargs.get('parcelas', 1),
+        }
+        kwargs['info'] = json.dumps(data)
         instance = self.PaymentHistory(**kwargs)
         if isinstance(instance.info, dict):
             instance.info = json.dumps(instance.info)
@@ -112,12 +125,14 @@ class DataBase:
     def aprove_user_access(self, user_id: int) -> Type[User]:
         user = self.get_user(user_id=user_id)
         user.access_aproved = True
+        self._session.commit()
         self._session.refresh(user)
         return user
 
     def revoke_user_access(self, user_id: int) -> Type[User]:
         user = self.get_user(user_id=user_id)
         user.access_aproved = False
+        self._session.commit()
         self._session.refresh(user)
         return user
 

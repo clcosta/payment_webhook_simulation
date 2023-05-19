@@ -1,3 +1,5 @@
+from typing import Type
+
 from payment_webhook.data.contracts import Actions, PaymentStatus
 from payment_webhook.data.database import DataBase
 
@@ -7,7 +9,9 @@ from .webhook_schemas import WebhookBodySchema
 class PaymentHandle:
     data: WebhookBodySchema = None
 
-    def __register_payment(self, actions: list[Actions]) -> DataBase.User:
+    def __register_payment(
+        self, actions: list[Actions]
+    ) -> Type[DataBase.User]:
         with DataBase() as db:
             user = db.get_user(email=self.data.email)
             if not user:
@@ -19,7 +23,12 @@ class PaymentHandle:
                 user_email=user.email,
                 payment_type_id=payment_type_id,
                 actions=actions,
+                valor=self.data.valor,
+                forma_de_pagamento=self.data.forma_pagamento,
+                parcelas=self.data.parcelas,
             )
+            # REFRESH USER INSTANCE
+            user = db.get_user(email=self.data.email)
         return user
 
     def _payment_approved(self):
