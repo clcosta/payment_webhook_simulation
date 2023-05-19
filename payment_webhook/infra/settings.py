@@ -8,13 +8,13 @@ load_dotenv()
 
 # BASE URL
 
-BASE_PATH = Path(__file__).parent
+BASE_PATH = Path(__file__).parent.parent.parent
 
 # DATABASE
 DATABASE_URL = 'sqlite:///db.db'
 
 # TEMPLATE_DIR
-TEMPLATE_DIR = BASE_PATH / 'main/server/templates'
+TEMPLATE_DIR = BASE_PATH / 'payment_webhook/main/server/templates'
 
 # ENCRYPTION
 ENCRYPTION_KEY = os.getenv(

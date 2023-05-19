@@ -1,6 +1,6 @@
 from sqlmodel import SQLModel
 
-from payment_webhook.settings import DEFAULT_REGISTER_TOKEN
+from payment_webhook.infra.settings import DEFAULT_REGISTER_TOKEN
 
 
 class IAuthUser(SQLModel):

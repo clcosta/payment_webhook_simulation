@@ -1,33 +1,30 @@
-from flask import Blueprint, render_template, request
+from flask import Blueprint, redirect, render_template, request, url_for
+from flask_login import login_required
+
+from payment_webhook.application.controllers import (
+    UserAuthenticationController,
+    UserRegisterController,
+)
 
 pages_router = Blueprint('pages', __name__)
 
 
 @pages_router.route('/', methods=['GET'])
+@login_required
 def home():
-    # TODO: Auth Middleware
     return render_template('home.html')
 
 
-@pages_router.route('/cadaster', methods=['GET', 'POST'])
-def cadaster():
-    # TODO: Auth Middleware
-    # TODO: Cadaster Handle
-    print()
-    return render_template('cadaster.html')
+@pages_router.route('/register', methods=['GET', 'POST'])
+def register():
+    return UserRegisterController().handle()
 
 
 @pages_router.route('/login', methods=['GET', 'POST'])
 def login():
-    # TODO: Auth Middleware
-    # TODO: Login Handle
-    print(request)
-    return render_template('login.html')
+    return UserAuthenticationController().handle()
 
 
 @pages_router.route('/logout', methods=['GET'])
 def logout():
-    # TODO: Auth Middleware
-    # TODO: Logout Handle
-    print()
-    return render_template('logout.html')
+    return redirect(url_for('pages.home'))

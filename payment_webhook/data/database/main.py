@@ -5,7 +5,7 @@ from sqlalchemy.exc import IntegrityError
 from sqlmodel import Session, SQLModel, select, text
 
 from payment_webhook.data.contracts import Actions, PaymentStatus
-from payment_webhook.settings import BASE_PATH
+from payment_webhook.infra.settings import BASE_PATH
 
 from .default_data import create_payments_data
 from .engine import engine
@@ -92,7 +92,6 @@ class DataBase:
         )
         return user_instance
 
-    # noinspection PyArgumentList
     def get_registered_user(
         self, email: str, password: str
     ) -> Type[User] | None:

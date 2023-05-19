@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% block title %}Register{% endblock %}
+
+{% block content %}
+    <h1>Formulário de registro</h1>
+    <form  action="#" method="POST">
+        <div class="form-group">
+            <label for="email">Email</label>
+            <input type="text" class="form-control" id="email" name="email" required>
+        </div>
+        <div class="form-group">
+            <label for="password">Senha</label>
+            <input type="password" class="form-control" id="password" name="password" required>
+        </div>
+        <div class="form-group">
+            <label for="token">Token de acesso</label>
+            <input type="text" class="form-control" id="token" name="token" required>
+        </div>
+        <button type="submit" class="btn btn-primary mt-3">Entrar</button>
+    </form>
+    <div class="pt=2">
+        <h4>Se você ja tem suas credenciais para realizar o login clique no link abaixo:</h4>
+        <b><legend class="small">Se você já realizou o pagamento utilize o mesmo email que foi utilizado no momento da compra!</legend></b>
+        <a href="{{ url_for('pages.login') }}">Realizar Login</a>
+    </div>
+{% endblock %}

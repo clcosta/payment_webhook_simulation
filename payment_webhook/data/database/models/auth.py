@@ -6,7 +6,7 @@ from sqlalchemy_utils.types.encrypted.encrypted_type import AesEngine
 from sqlmodel import Column, Field
 
 from payment_webhook.data.contracts import IAuthUser
-from payment_webhook.settings import ENCRYPTION_KEY
+from payment_webhook.infra.settings import ENCRYPTION_KEY
 
 
 class Auth(IAuthUser, table=True):
