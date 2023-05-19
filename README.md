@@ -12,7 +12,9 @@
     - [x] If payment is refunded:
         - Revoke user access to course plataform.
         - Send a message to the user.
-- [ ] Log all the webhooks received from the simlator and all actions taken.
+- [ ] Log all the webhooks received from the simulator and all actions taken.
+  - [x] Log in bank.
+  - [ ] Associate to simulator callback url.
 - [ ] The register account of the course plataform need to field *token*, the user will be sending in the register plataform in a field of Form and the token needs to be equals to "uhdfaAADF123".
 - [ ] The user need a page to show all payments status.
 
