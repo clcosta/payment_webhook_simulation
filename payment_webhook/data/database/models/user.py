@@ -1,14 +1,20 @@
 from datetime import datetime
 
-from sqlmodel import Field
+from flask_login import UserMixin
+from sqlalchemy import Boolean, Column, DateTime, Integer, String
 
-from payment_webhook.data.contracts import IUser
+from .base import BaseModel
 
 
-class User(IUser, table=True):  # Table and Schema
-    id: int | None = Field(default=None, primary_key=True)
-    email: str = Field(unique=True)
-    access_aproved: bool = Field(default=False)
-    created_at: datetime = Field(default=datetime.now())
-    updated_at: datetime = Field(default=datetime.now())
-    deleted_at: datetime | None = Field(default=None)
+class UserModel(UserMixin, BaseModel):
+    __tablename__ = 'user'
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    nome = Column(String(50))
+    email = Column(String(50), unique=True)
+    access_aproved = Column(Boolean, default=False)
+    created_at = Column(DateTime, default=datetime.now())
+    updated_at = Column(DateTime, default=datetime.now())
+    deleted_at = Column(DateTime, nullable=True)
+
+    def __repr__(self) -> str:
+        return 'UserModel(nome={!r}, email={!r})'.format(self.nome, self.email)

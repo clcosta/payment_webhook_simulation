@@ -1,6 +1,13 @@
-__all__ = ['Auth', 'PaymentHistory', 'PaymentType', 'User']
+__all__ = [
+    'AuthModel',
+    'PaymentHistoryModel',
+    'PaymentTypeModel',
+    'UserModel',
+    'BaseModel',
+]
 
-from .auth import Auth
-from .payment_history import PaymentHistory
-from .payment_type import PaymentType
-from .user import User
+from .auth import AuthModel
+from .base import BaseModel
+from .payment_history import PaymentHistoryModel
+from .payment_type import PaymentTypeModel
+from .user import UserModel

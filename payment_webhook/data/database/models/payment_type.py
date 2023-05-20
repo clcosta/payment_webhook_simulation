@@ -1,12 +1,12 @@
-from sqlalchemy.orm import declared_attr
-from sqlmodel import Field
+from sqlalchemy import Column, Integer, String
 
-from payment_webhook.data.contracts import IPaymentType
+from .base import BaseModel
 
 
-class PaymentType(IPaymentType, table=True):   # Table and Schema
-    id: int | None = Field(default=None, primary_key=True)
+class PaymentTypeModel(BaseModel):
+    __tablename__ = 'payment_type'
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    status = Column(String(20))
 
-    @declared_attr
-    def __tablename__(cls) -> str:
-        return 'payment_type'
+    def __repr__(self) -> str:
+        return 'UserModel(status={!r})'.format(self.status)

@@ -9,9 +9,7 @@ from .webhook_schemas import WebhookBodySchema
 class PaymentHandle:
     data: WebhookBodySchema = None
 
-    def __register_payment(
-        self, actions: list[Actions]
-    ) -> Type[DataBase.User]:
+    def __register_payment(self, actions: list[Actions]):
         with DataBase() as db:
             user = db.get_user(email=self.data.email)
             if not user:
@@ -20,7 +18,7 @@ class PaymentHandle:
                 payment_type=self.data.status
             )
             db.register_payment(
-                user_email=user.email,
+                email=user.email,
                 payment_type_id=payment_type_id,
                 actions=actions,
                 valor=self.data.valor,

@@ -1,8 +1,10 @@
-from flask import Blueprint, redirect, render_template, request, url_for
+from flask import Blueprint
 from flask_login import login_required
 
 from payment_webhook.application.controllers import (
+    HomeController,
     UserAuthenticationController,
+    UserLogoutController,
     UserRegisterController,
 )
 
@@ -12,7 +14,7 @@ pages_router = Blueprint('pages', __name__)
 @pages_router.route('/', methods=['GET'])
 @login_required
 def home():
-    return render_template('home.html')
+    return HomeController().handle()
 
 
 @pages_router.route('/register', methods=['GET', 'POST'])
@@ -26,5 +28,6 @@ def login():
 
 
 @pages_router.route('/logout', methods=['GET'])
+@login_required
 def logout():
-    return redirect(url_for('pages.home'))
+    return UserLogoutController().handle()

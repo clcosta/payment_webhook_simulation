@@ -1,1 +1,1 @@
-from .payment_status import create_payments_data
+from .payment_status import get_payment_status_values

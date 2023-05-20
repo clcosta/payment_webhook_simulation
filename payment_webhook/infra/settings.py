@@ -11,7 +11,7 @@ load_dotenv()
 BASE_PATH = Path(__file__).parent.parent.parent
 
 # DATABASE
-DATABASE_URL = 'sqlite:///db.db'
+DATABASE_URL = 'sqlite:///db.db?check_same_thread=False'
 
 # TEMPLATE_DIR
 TEMPLATE_DIR = BASE_PATH / 'payment_webhook/main/server/templates'

@@ -1,19 +1,17 @@
 from datetime import datetime
 
-from sqlalchemy.orm import declared_attr
-from sqlmodel import Field
+from sqlalchemy import Column, DateTime, ForeignKey, Integer, String
 
-from payment_webhook.data.contracts import IPaymentHistory
+from .base import BaseModel
+from .payment_type import PaymentTypeModel
 
 
-class PaymentHistory(IPaymentHistory, table=True):   # Table and Schema
-    id: int | None = Field(default=None, primary_key=True)
-    payment_type_id: int = Field(foreign_key='payment_type.id', nullable=False)
-    info: str = Field(nullable=False)
-    created_at: datetime = Field(default=datetime.now())
-    updated_at: datetime = Field(default=datetime.now())
-    deleted_at: datetime | None = Field(default=None)
-
-    @declared_attr
-    def __tablename__(cls) -> str:
-        return 'payment_history'
+class PaymentHistoryModel(BaseModel):
+    __tablename__ = 'payment_history'
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    email = Column(String)
+    payment_type_id = Column(Integer, ForeignKey(PaymentTypeModel.id))
+    info = Column(String, nullable=False)
+    created_at = Column(DateTime, default=datetime.now())
+    updated_at = Column(DateTime, default=datetime.now())
+    deleted_at = Column(DateTime, nullable=True)

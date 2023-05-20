@@ -4,12 +4,20 @@
 
 {% block content %}
 
-{#    {% if user.is_authenticated %}#}
-        <div id="container">
-            <span id="m-5 p-2">
-                {{ globals }}
-                <h3>Suas ultimas transações</h3>
-            </span>
-        </div>
-{#    {% endif %}#}
+{% if current_user.is_authenticated %}
+{% if current_user.access_aproved %}
+<div id="container">
+    <span id="m-5 p-2">
+        <h3>Suas ultimas transações</h3>
+        {{ history }}
+    </span>
+</div>
+{% else %}
+<span id="m-5 p-2">
+    <h3>Seu acesso não está liberado!</h3>
+    <span>Olá, <b>{{ current_user.nome }}</b>, você está quase lá!</span>
+    <p>Verificamos no sistema e ainda não identificamos o seu pagamento.<br>Basta realizar o pagamento e assim que ele for aprovado você terá seu acesso liberado em minutos.<br> Entre em contato com o suporte em caso de dúvidas.</p>
+</span>
+{% endif %}
+{% endif %}
 {% endblock %}
