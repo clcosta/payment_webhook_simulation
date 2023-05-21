@@ -11,6 +11,7 @@ python = "^3.11"
 Flask-SQLAlchemy = "^3.0.3"
 pydantic = "^1.10.7"
 python-dotenv = "^1.0.0"
+SQLAlchemy = "^2.0.15"
 
 
 [tool.poetry.group.dev.dependencies]
