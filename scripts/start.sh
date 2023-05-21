@@ -6,4 +6,4 @@ if [ ! -d "venv" ]; then
 else
     source venv/bin/activate
 fi
-python app.py
+python main.py

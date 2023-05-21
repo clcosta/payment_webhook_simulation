@@ -5,4 +5,4 @@ if (!(Test-Path -Path "venv")) {
 } else {
     .\venv\Scripts\Activate.ps1
 }
-python app.py
+python main.py

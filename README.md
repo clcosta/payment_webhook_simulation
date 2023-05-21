@@ -28,7 +28,7 @@ https://github.com/clcosta/payment_webhook_simulation.git
 ```
 pip install -r requirements.txt
 
-python app.py
+python main.py
 ```
 
 

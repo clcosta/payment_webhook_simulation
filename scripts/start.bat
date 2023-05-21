@@ -6,4 +6,4 @@ if not exist "venv\" (
 ) else (
     call venv\Scripts\activate.bat
 )
-python app.py
+python main.py
