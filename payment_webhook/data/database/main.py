@@ -29,9 +29,6 @@ class DataBase:
 
     def __insert_default_values(self):
         payment_status = get_payment_status_values()
-        payment_status = [
-            PaymentTypeModel(status=p.status) for p in payment_status
-        ]
         payments_status = self.__context.get_all_payment_status()
         if not payments_status:
             self.__context.add_all(payment_status)
