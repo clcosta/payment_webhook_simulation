@@ -1,4 +1,7 @@
+import json
+
 from flask import request
+from werkzeug.exceptions import UnsupportedMediaType
 
 from ..payment_handle import PaymentHandle
 from .base_controller import BaseController
@@ -15,7 +18,10 @@ class WebHookCallbackController(BaseController):
             return self._formating_json_response(
                 status=400, result={'message': 'Necessary Payment data'}
             )
-        body = request.get_json()
+        try:
+            body = request.get_json()
+        except UnsupportedMediaType as er:
+            body = json.loads(request.data.decode('utf-8'))
         handle = PaymentHandle()
         try:
             status = handle.process(body=body)

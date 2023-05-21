@@ -3,14 +3,17 @@
     <a class="navbar-brand m-1" href="{{ url_for('pages.home') }}">Home</a>
     <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
         <ul class="navbar-nav ml-auto">
+            {% if current_user.is_authenticated %}
             <li class="nav-item mr-2 ml-2">
                 <a class="nav-link" href="{{ url_for('pages.logout') }}">Sair</a>
+            {% else %}
             <li class="nav-item mr-2 ml-2">
                 <a class="nav-link" href="{{ url_for('pages.register') }}">Cadastro</a>
             </li>
             <li class="nav-item mr-2 ml-2">
                 <a class="nav-link" href="{{ url_for('pages.login') }}">Login</a>
             </li>
+            {% endif %}
         </ul>
     </div>
 </nav>

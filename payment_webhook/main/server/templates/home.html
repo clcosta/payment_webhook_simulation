@@ -9,7 +9,13 @@
 <div id="container">
     <span id="m-5 p-2">
         <h3>Suas ultimas transações</h3>
-        {{ history }}
+        <ul>
+        <li class="">Status: Pagamento pendente às {{ current_user.created_at.strftime('%d/%m/%Y %H:%M:%S') }}</li>
+        {% for history in user_history %}
+            <li>Status: {{ history.payment_type.status }} às {{ history.created_at.strftime('%d/%m/%Y %H:%M:%S') }}</li>
+            <small> Detalhes: {{ history.info }}</small>
+        {% endfor %}
+        </ul>
     </span>
 </div>
 {% else %}
