@@ -73,6 +73,18 @@ async = ["asgiref (>=3.2)"]
 dotenv = ["python-dotenv"]
 
 [[package]]
+name = "Flask-Login"
+version = "0.6.2"
+description = "User authentication and session management for Flask."
+category = "main"
+optional = false
+python-versions = ">=3.7"
+
+[package.dependencies]
+Flask = ">=1.0.4"
+Werkzeug = ">=1.0.1"
+
+[[package]]
 name = "Flask-SQLAlchemy"
 version = "3.0.3"
 description = "Add SQLAlchemy support to your Flask application."
@@ -298,8 +310,8 @@ watchdog = ["watchdog (>=2.3)"]
 
 [metadata]
 lock-version = "1.1"
-python-versions = "^3.11"
-content-hash = "a5ed8ce2a58653867287f8db0f0015aadb5c7de9b169b5345c87d32f5d36013a"
+python-versions = "^3.10"
+content-hash = "c0b9ee2d92490b62aff6cede789af3d6f26c478bf85635a9d930aeed50edd00e"
 
 [metadata.files]
 blinker = [
@@ -329,6 +341,10 @@ filelock = [
 Flask = [
     {file = "Flask-2.3.2-py3-none-any.whl", hash = "sha256:77fd4e1249d8c9923de34907236b747ced06e5467ecac1a7bb7115ae0e9670b0"},
     {file = "Flask-2.3.2.tar.gz", hash = "sha256:8c2f9abd47a9e8df7f0c3f091ce9497d011dc3b31effcf4c85a6e2b50f4114ef"},
+]
+Flask-Login = [
+    {file = "Flask-Login-0.6.2.tar.gz", hash = "sha256:c0a7baa9fdc448cdd3dd6f0939df72eec5177b2f7abe6cb82fc934d29caac9c3"},
+    {file = "Flask_Login-0.6.2-py3-none-any.whl", hash = "sha256:1ef79843f5eddd0f143c2cd994c1b05ac83c0401dc6234c143495af9a939613f"},
 ]
 Flask-SQLAlchemy = [
     {file = "Flask-SQLAlchemy-3.0.3.tar.gz", hash = "sha256:2764335f3c9d7ebdc9ed6044afaf98aae9fa50d7a074cef55dde307ec95903ec"},
