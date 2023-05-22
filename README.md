@@ -63,7 +63,7 @@ python main.py
 ```
 payment_webhook_simulation
 ├── README.md
-├── app.py
+├── main.py
 ├── db.db
 ├── payment_webhook
 │   ├── __init__.py
